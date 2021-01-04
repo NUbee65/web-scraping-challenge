@@ -1,13 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Jan  3 20:59:21 2021
+# coding: utf-8
 
-@author: brook
-"""
+# In[1]:
 
-#%% Dependencies
 
+# Dependencies
 import requests
 from splinter import Browser
 from bs4 import BeautifulSoup
@@ -16,13 +13,20 @@ import pandas as pd
 import pymongo
 
 
-#%% Configure ChromeDriver / Setup Splinter
+# In[2]:
 
+
+# Configure ChromeDriver / Setup Splinter
 executable_path = {'executable_path': ChromeDriverManager().install()}
 browser = Browser('chrome', **executable_path, headless=False)
 
 
-#%% NASA Mars News
+# ## Step 1 - Scraping
+
+# ### A. NASA Mars News
+
+# In[3]:
+
 
 def mars_news():
     
@@ -49,7 +53,12 @@ def mars_news():
     return article_date, article_title, article_summary
 
 
-#%% JPL Space Images - Featured Image
+# ### B1. JPL Space Images - Featured Image
+
+# #### Convert above code into a function named "featured_image()" using Method 1 (which returned the larger image)
+
+# In[4]:
+
 
 def featured_image():
     
@@ -78,7 +87,12 @@ def featured_image():
     return featured_image_title, featured_image_url
 
 
-#%% Mars Facts
+# ### B1. Mars Facts
+
+# #### Convert above code into a function named "mars_facts()"
+
+# In[5]:
+
 
 def mars_facts():
 
@@ -102,7 +116,12 @@ def mars_facts():
     return mars_facts_html
 
 
-#%% Mars Hemispheres
+# ### C. Mars Hemispheres
+
+# #### Convert above code into a function named "mars_hemispheres()"
+
+# In[6]:
+
 
 def mars_hemispheres():
 
@@ -165,7 +184,12 @@ def mars_hemispheres():
     return hemisphere_image_urls
 
 
-#%% Function to Scrape All Data
+# ### Create single function to scrape all data
+
+# #### Convert above code into a function named "scrape_all()"
+
+# In[7]:
+
 
 def scrape_all():
     article_date, article_title, article_summary  = mars_news()
@@ -199,11 +223,30 @@ def scrape_all():
     return mars_dict, mars_hemispheres_dict
 
 
-#%% Execution Script
+# ### Create dataframe out of hemispheres list of dictionaries
+
+# In[8]:
+
+
+# mars_hemispheres_df = pd.DataFrame(hemisphere_image_urls)
+# mars_hemispheres_df = mars_hemispheres_df.rename(columns={"title": "mars_hemispheres_title", 
+#                                                          "img_url": "mars_hemispheres_img_url"})
+# mars_hemispheres_df.set_index("mars_hemispheres_title", inplace=True)
+# mars_hemispheres_df
+
+
+# ### Insert into MongoDB
+
+# In[9]:
+
 
 # Initialize pymongo to work with MongoDBs
 conn = 'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
+
+
+# In[10]:
+
 
 # Connect to mars_app database
 db = client.mars_app
@@ -211,18 +254,32 @@ db = client.mars_app
 # Connect to mars collection
 mars = db.mars
 
+
+# In[11]:
+
+
 # Activate function scrape_all(), producing 2 dictionaries to insert
 scrape_all()
+
+
+# In[13]:
+
 
 # Insert/Update mars_dict dictionary as a document into mars collection of mars_app MongoDB database
 # Importantly, we use UPSERT method, which updates existing documents and adds documents if they don't exist
 mars.update_one({}, {'$set': mars_dict}, upsert=True)
 
 
+# In[14]:
+
+
 # Insert/Update mars_hemispheres_dict dictionary into mars collection of mars_app MongoDB database
 # Importantly, we use UPSERT method, which updates existing documents and adds documents if they don't exist
+# mars_hemispheres_dict = mars_hemispheres_df.to_dict()
 mars.update_one({}, {'$set': mars_hemispheres_dict}, upsert=True)
 
+
+# In[ ]:
 
 
 
