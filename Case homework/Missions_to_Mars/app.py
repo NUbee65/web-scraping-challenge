@@ -62,7 +62,7 @@ def scrape():
     return redirect('/')
 
 if __name__ == '__main__':
-    app.run(debut=True)
+    app.run(debug=True)
 
 
 

@@ -17,25 +17,71 @@
   <body>
     
     <div class="jumbotron" style="text-align:center;">
-        <h1 class="display-4">Mission to Mars</h1>
-        <a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a>
+        <h2 class="display-4" style='font-weight: bold;'>Mission to Mars</h2>
+        <a class="btn btn-primary btn-md" href="/scrape" role="button">Scrape New Data</a>
     </div>
 
     <div class='container'>
         <div class='row'>
             <div class='col-md-12'>
-                <h3>Latest Mars News</h3>
-                <h4>{{ mars_data['news_title'] }}</h4>
-                <p>{{ mars_data['news_paragraph'] }}</p>
+                <h4 style='font-weight: bold;'>Latest Mars News</h4>
+                <p style="font-weight: bold;">{{ mars_data['article_title'] }}</p>
+                <p>{{ mars_data['article_date'] }}</p>
+                <p>{{ mars_data['article_summary'] }}</p>
             </div>
         </div>
         <div class='row'>
             <div class='col-md-8'>
-                <h3>Featured Mars Image</h3>
-                <img src = "{{ mars_data['featured_img_url'] }}" style='max-width: 100%; height: auto;'/>
+                <h4 style="font-weight: bold;">Featured JPL Image</h4>
+                <p style="font-weight: bold;">{{ mars_data['featured_image_title'] }}</p>
+                <img src = "{{ mars_data['featured_image_url'] }}" style='max-width: 100%; height: auto;'/>
             </div>
-            <div class='col-md-4'>
+            <div class='col-md-4' style="border-style: solid; padding-top: 10px;">
+                <h5>Mars Facts</h5>
                 {{ mars_data['mars_facts_html'] | safe }}
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-md-12'>
+                <h4 class="text-center" style='font-weight: bold;'>Mars Hemispheres</h4>
+                <p>The four hemispheres appear as they would to an observer at a Martian altitude of 2000 kilometers. This perspective results in a distortion of both size and relative orientation of features on the surface. The size of features in the central areas of the hemispheres is greatly exaggerated. Looking further towards the outer edge of the hemispheres, apparent horizontal distances are reduced due to the fact that the features are being looked at from more of an "edge on" view.</p>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-md-6'>
+                <img src = "{{ mars_data['featured_image_url'] }}" style='max-width: 100%; height: auto;'/>
+                <h5 style='font-weight: bold;'>Cerberus Hemisphere Enhanced</h5>
+                <p>To the right (east) lies the Valles Marineris hemisphere, to the left (west) lies the Syrtis Major hemisphere</p>
+            </div>
+            <div class='col-md-6'>
+                <img src = "{{ mars_data['featured_image_url'] }}" style='max-width: 100%; height: auto;'/>
+                <h5 style='font-weight: bold;'>Valles Marineris Hemisphere Enhanced</h5>
+                <p>To the right (east) lies the Schiaparelli hemisphere, to the left (west) lies the Cerberus hemisphere</p>
+
+
+
+
+                
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-md-6'>
+                <img src = "{{ mars_data['featured_image_url'] }}" style='max-width: 100%; height: auto;'/>
+                <h5 style='font-weight: bold;'>Schiaparelli Hemisphere Enhanced</h5>
+                <p>To the right (east) lies the Syrtis Major hemisphere, to the left (west) lies the Valles Marineris hemisphere</p>
+
+
+
+                
+            </div>
+            <div class='col-md-6'>
+
+                <img src = "{{ mars_data['featured_image_url'] }}" style='max-width: 100%; height: auto;'/>
+                <h5 style='font-weight: bold;'>Syrtis Major Hemisphere Enhanced</h5>
+                <p>To the right (east) lies the Cerberus hemisphere, to the left (west) lies the Schiaparelli hemisphere</p>
+
+
+                
             </div>
         </div>
     </div>
