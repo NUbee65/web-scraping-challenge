@@ -7,26 +7,14 @@ Created on Sun Jan  3 20:59:21 2021
 
 #%%
 
-from flask import Flask, render_template
-import pandas as pd
+from flask import Flask, render_template, redirect
 import pymongo
-from splinter import Browser
-from bs4 import BeautifulSoup
-from webdriver_manager.chrome import ChromeDriverManager
-import scrape_mars
 
 
 #%%
 
 # Instantiate flask app
 app = Flask(__name__)
-
-
-#%%
-
-# Configure ChromeDriver
-# executable path = {'executable_path': ChromeDriverManager().install()}
-# browser = Browser('chrome', **executable_path)
 
 
 #%%
@@ -39,35 +27,39 @@ client = pymongo.MongoClient(conn)
 db = client.mars_app
 
 # Connect to mars collection of mars_app MongoDB database
-mars = db.mars
+mars_coll = db.mars
 
 
 #%%
 
 @app.route('/')
 def index():
-    # some code here
+    
+    mars_data = mars_coll.find_one()
+    
+    return(render_template('index.html', mars_data=mars_data))
+
+#%%
     
 @app.route('/scrape')
 def scrape():
     
-    # Connect to mars_app MongoDB database
-    db = client.mars_app
-    
-    # Connect to mars collection
-    mars = db.mars
+    # this is the py script with all of the scraping functions
+    import scrape_mars
     
     # Gather 2 documents (dictionaries) to insert into mars collection
     # named (1) mars_dict and (2) mars_hemispheres_dict
     # scrape_all() was created in teh scrape_mars.py file
     # It is accessed by import (see above)
-    scrape_all()
+    scrape_mars.scrape_all()
     
     # Upsert #1 into the mars collection (preferred to avoid duplicates)
     mars.update_one({}, {'$set': mars_dict}, upsert=True)
     
     # Upsert #2 into the mars collection (preferred to avoid duplicates)
     mars.update_one({}, {'$set': mars_hemispheres_dict}, upsert=True)
+    
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debut=True)

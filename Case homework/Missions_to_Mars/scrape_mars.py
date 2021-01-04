@@ -202,26 +202,26 @@ def scrape_all():
 #%% Execution Script
 
 # Initialize pymongo to work with MongoDBs
-conn = 'mongodb://localhost:27017'
-client = pymongo.MongoClient(conn)
+# conn = 'mongodb://localhost:27017'
+# client = pymongo.MongoClient(conn)
 
 # Connect to mars_app database
-db = client.mars_app
+# db = client.mars_app
 
 # Connect to mars collection
-mars = db.mars
+# mars = db.mars
 
 # Activate function scrape_all(), producing 2 dictionaries to insert
-scrape_all()
+# scrape_all()
 
 # Insert/Update mars_dict dictionary as a document into mars collection of mars_app MongoDB database
 # Importantly, we use UPSERT method, which updates existing documents and adds documents if they don't exist
-mars.update_one({}, {'$set': mars_dict}, upsert=True)
+# mars.update_one({}, {'$set': mars_dict}, upsert=True)
 
 
 # Insert/Update mars_hemispheres_dict dictionary into mars collection of mars_app MongoDB database
 # Importantly, we use UPSERT method, which updates existing documents and adds documents if they don't exist
-mars.update_one({}, {'$set': mars_hemispheres_dict}, upsert=True)
+# mars.update_one({}, {'$set': mars_hemispheres_dict}, upsert=True)
 
 
 
