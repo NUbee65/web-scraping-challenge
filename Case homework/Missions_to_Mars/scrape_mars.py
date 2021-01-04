@@ -173,8 +173,7 @@ def scrape_all():
     mars_facts_html = mars_facts()
     hemisphere_image_urls = mars_hemispheres()
     
-    global mars_dict
-    global mars_hemispheres_dict
+    global mars_dict    
     
     mars_dict = {
         'article_date': article_date, 
@@ -182,46 +181,14 @@ def scrape_all():
         'article_summary': article_summary,
         'featured_image_title': featured_image_title, 
         'featured_image_url': featured_image_url,
-        'mars_facts_html': mars_facts_html
+        'mars_facts_html': mars_facts_html,
+        'hemisphere_image_urls': hemisphere_image_urls
     }
     
     # print(mars_dict)
     
-    mars_hemispheres_df = pd.DataFrame(hemisphere_image_urls)
-    mars_hemispheres_df = mars_hemispheres_df.rename(columns={"title": "mars_hemispheres_title", 
-                                                              "img_url": "mars_hemispheres_img_url"})
-    mars_hemispheres_df.set_index("mars_hemispheres_title", inplace=True)
-    mars_hemispheres_dict = mars_hemispheres_df.to_dict()
-    
-    # print(mars_hemispheres_df)
-    # print(mars_hemispheres_dict)
-    
-    return mars_dict, mars_hemispheres_dict
+    return mars_dict
 
-
-#%% Execution Script
-
-# Initialize pymongo to work with MongoDBs
-# conn = 'mongodb://localhost:27017'
-# client = pymongo.MongoClient(conn)
-
-# Connect to mars_app database
-# db = client.mars_app
-
-# Connect to mars collection
-# mars = db.mars
-
-# Activate function scrape_all(), producing 2 dictionaries to insert
-# scrape_all()
-
-# Insert/Update mars_dict dictionary as a document into mars collection of mars_app MongoDB database
-# Importantly, we use UPSERT method, which updates existing documents and adds documents if they don't exist
-# mars.update_one({}, {'$set': mars_dict}, upsert=True)
-
-
-# Insert/Update mars_hemispheres_dict dictionary into mars collection of mars_app MongoDB database
-# Importantly, we use UPSERT method, which updates existing documents and adds documents if they don't exist
-# mars.update_one({}, {'$set': mars_hemispheres_dict}, upsert=True)
 
 
 

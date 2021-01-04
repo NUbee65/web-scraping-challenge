@@ -47,17 +47,12 @@ def scrape():
     # this is the py script with all of the scraping functions
     import scrape_mars
     
-    # Gather 2 documents (dictionaries) to insert into mars collection
-    # named (1) mars_dict and (2) mars_hemispheres_dict
-    # scrape_all() was created in teh scrape_mars.py file
-    # It is accessed by import (see above)
-    scrape_mars.scrape_all()
+    # Gather document (dictionary) to insert into mars collection named mars_dict
+    # scrape_all() was created in teh scrape_mars.py file and is accessed by import (see above)
+    mars_dict = scrape_mars.scrape_all()
     
-    # Upsert #1 into the mars collection (preferred to avoid duplicates)
-    mars.update_one({}, {'$set': mars_dict}, upsert=True)
-    
-    # Upsert #2 into the mars collection (preferred to avoid duplicates)
-    mars.update_one({}, {'$set': mars_hemispheres_dict}, upsert=True)
+    # Upsert into the mars collection (preferred to avoid duplicates)
+    mars_coll.update_one({}, {'$set': mars_dict}, upsert=True)
     
     return redirect('/')
 
